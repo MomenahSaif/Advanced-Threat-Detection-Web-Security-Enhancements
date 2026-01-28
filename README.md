@@ -10,3 +10,19 @@ source IP to prevent brute-force attacks.
 - Configured retry limits and ban time
 - Automatic IP blocking using firewall rules
 - Real-time monitoring verified using fail2ban-client
+
+
+
+
+
+
+
+
+### Security Headers & CSP
+
+Security headers were implemented using Helmet middleware to protect
+the application against common client-side attacks.
+
+- Content Security Policy (CSP) implemented to mitigate XSS attacks
+- Strict-Transport-Security (HSTS) configured to enforce HTTPS
+- Additional headers enabled for clickjacking and MIME-type protection
