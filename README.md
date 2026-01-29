@@ -1,211 +1,159 @@
-This project represents Week 4 of my cybersecurity / backend internship, focused on implementing advanced threat detection, API security hardening, and browser-level security controls.
-The goal of this phase was to detect malicious activity in real time, protect backend APIs from abuse, and enforce secure communication and content loading policies.
+# Week 4 – Advanced Threat Detection & Web Security Enhancements
 
-The implementation follows real-world security best practices and aligns with common guidance from OWASP.
+## Overview
+This project focuses on implementing advanced security controls for a Node.js Express application. The goal was to enhance threat detection, harden API security, and protect the application against common web-based attacks using industry-standard tools and best practices.
 
-Objectives
+The implementation covers intrusion detection, API abuse prevention, secure cross-origin communication, authentication mechanisms, and browser-level security headers.
 
-Detect and mitigate brute-force attacks using host-based monitoring
+---
 
-Protect APIs against abuse, unauthorized access, and cross-origin attacks
+## Objectives
+- Detect and mitigate brute-force and unauthorized access attempts
+- Secure API endpoints against abuse and unauthorized usage
+- Implement strong browser security controls to prevent client-side attacks
+- Align security practices with OWASP Top 10 recommendations
 
-Enforce strong browser security policies to prevent client-side attacks
+---
 
-Implement layered security controls across the system
+## Technologies Used
+- Node.js
+- Express.js
+- Fail2Ban
+- express-rate-limit
+- cors
+- helmet
+- Linux (Ubuntu/Kali)
 
-Technologies Used
+---
 
-Node.js
+## 1. Intrusion Detection & Monitoring
 
-Express.js
+### Tool Used
+**Fail2Ban**
 
-express-rate-limit
+### Description
+Fail2Ban was configured as a host-based intrusion prevention system to monitor authentication logs in real time. It detects repeated failed login attempts and automatically blocks the source IP address using firewall rules.
 
-cors
+### Implementation Steps
+- Installed Fail2Ban on the Linux system
+- Created a local configuration file (`jail.local`)
+- Enabled the SSH jail to monitor authentication attempts
+- Configured retry limits and ban duration
+- Verified monitoring using the Fail2Ban client
 
-helmet
+### Outcome
+- Real-time monitoring of SSH login attempts
+- Automatic IP banning after multiple failed attempts
+- Protection against brute-force attacks
 
-Fail2Ban
+---
 
-Linux (Ubuntu/Kali environment)
+## 2. API Security Hardening
 
-1. Intrusion Detection & Monitoring
-Tool Used: Fail2Ban
+### 2.1 Rate Limiting
 
-Fail2Ban was configured as a host-based intrusion detection and prevention system. It continuously monitors system authentication logs and automatically blocks IP addresses that exhibit malicious behavior such as repeated failed login attempts.
+**Tool:** express-rate-limit
 
-Key Features Implemented
+Rate limiting was implemented to protect API endpoints from brute-force and denial-of-service attacks by limiting the number of requests per IP address.
 
-Real-time monitoring of SSH authentication logs
+**Configuration Highlights:**
+- Time window: 15 minutes
+- Maximum requests: 100 per IP
+- Applied to all `/api/*` routes
 
-Automatic detection of brute-force login attempts
+This ensures that excessive or malicious requests are automatically blocked.
 
-Temporary IP banning after multiple failed login attempts
+---
 
-Configurable retry thresholds and ban duration
+### 2.2 Cross-Origin Resource Sharing (CORS)
 
-Configuration Summary
+**Tool:** cors middleware
 
-SSH jail enabled
+CORS was configured to restrict API access to trusted origins only. This prevents unauthorized or malicious websites from accessing the backend APIs.
 
-Retry limit and ban time configured
+**Key Controls:**
+- Restricted allowed origins
+- Limited allowed HTTP methods
+- Prevented wildcard (`*`) access
 
-Service enabled and verified using fail2ban-client
+This reduces the risk of cross-origin data leakage and misuse.
 
-Security Benefit
+---
 
-This setup helps mitigate:
+### 2.3 API Authentication
 
-SSH brute-force attacks
+**Method Used:** API Key Authentication
 
-Credential stuffing
+Sensitive API endpoints were protected using API key–based authentication. Requests without a valid API key are denied access.
 
-Unauthorized access attempts at the system level
+**Key Features:**
+- API key passed through request headers
+- Middleware-based authentication
+- Unauthorized requests return HTTP 401
 
-2. API Security Hardening
+This ensures that only authorized clients can access protected resources.
 
-The backend API was secured using multiple layered controls to prevent abuse and unauthorized access.
+---
 
-2.1 Rate Limiting
+## 3. Security Headers & Content Security Policy
 
-Tool Used: express-rate-limit
+### 3.1 Security Headers
 
-Rate limiting was applied at the API level to restrict the number of requests from a single IP address within a defined time window.
+**Tool:** Helmet
 
-Configuration Details
+Helmet middleware was used to add multiple HTTP security headers automatically, protecting the application from common browser-based attacks such as clickjacking and MIME-type sniffing.
 
-Time window: 15 minutes
+---
 
-Maximum requests per IP: 100
+### 3.2 Content Security Policy (CSP)
 
-Applied to all /api/* routes
+A strict Content Security Policy was implemented to mitigate Cross-Site Scripting (XSS) attacks.
 
-Security Benefit
+**CSP Controls:**
+- Scripts allowed only from the same origin
+- Inline scripts blocked
+- External object embedding disabled
+- Insecure requests upgraded when possible
 
-Prevents brute-force login attempts
+This significantly reduces the risk of script injection attacks.
 
-Reduces risk of denial-of-service (DoS) attacks
+---
 
-Protects backend resources from abuse
+### 3.3 HTTP Strict Transport Security (HSTS)
 
-2.2 CORS Configuration
+HSTS was configured to enforce secure HTTPS communication.
 
-Tool Used: cors middleware
+**Key Settings:**
+- One-year max-age
+- Subdomains included
+- Preload enabled
 
-Cross-Origin Resource Sharing (CORS) was configured to restrict which client origins are allowed to access the API.
+Note: HSTS is enforced only when the application is deployed over HTTPS. On localhost (HTTP), browsers ignore this header, which is expected behavior.
 
-Configuration Details
+---
 
-Only trusted origins allowed
+## Verification & Testing
+- API endpoints tested via browser and command-line tools
+- Rate limiting validated by repeated requests
+- Authentication verified using valid and invalid API keys
+- Security headers confirmed using browser developer tools
+- Fail2Ban status checked using `fail2ban-client`
 
-Limited HTTP methods (GET, POST)
+---
 
-Wildcard origins explicitly avoided
 
-Security Benefit
+## Conclusion
+This focused on implementing practical, real-world security controls across both server-side and client-side layers. The application is now protected against common threats such as brute-force attacks, API abuse, unauthorized access, and client-side script injection, aligning with modern web security best practices.
 
-Prevents unauthorized websites from accessing the API
+---
 
-Protects against data theft via malicious frontends
+## Repository Contents
+- Express application source code
+- Security middleware implementations
+- Configuration files
+- Documentation and screenshots for verification
 
-Enforces controlled API consumption
+---
 
-2.3 API Authentication
-
-Method Used: API Key–based Authentication
-
-Sensitive API endpoints were protected using an API key mechanism. Requests without a valid API key are denied access.
-
-Implementation Details
-
-API key sent via custom request header
-
-Middleware validates API key before allowing access
-
-Unauthorized requests receive HTTP 401 response
-
-Security Benefit
-
-Ensures only authorized clients can access protected endpoints
-
-Prevents unauthenticated API usage
-
-Provides a simple but effective access control mechanism
-
-3. Security Headers & Content Security Policy
-
-To protect against client-side attacks, multiple HTTP security headers were implemented using Helmet.
-
-3.1 Security Headers
-
-Tool Used: helmet
-
-Helmet was added as global middleware to automatically apply recommended security headers.
-
-Headers enforced include:
-
-X-Content-Type-Options
-
-X-Frame-Options
-
-Referrer-Policy
-
-Other browser hardening headers
-
-3.2 Content Security Policy (CSP)
-
-A strict Content Security Policy was configured to control which resources the browser is allowed to load.
-
-CSP Rules Implemented
-
-Only self-hosted scripts allowed
-
-Inline and external untrusted scripts blocked
-
-Object embedding disabled
-
-Only trusted sources allowed for images and connections
-
-Security Benefit
-
-Prevents cross-site scripting (XSS) attacks
-
-Blocks malicious script injection
-
-Reduces impact of compromised frontend code
-
-3.3 HTTP Strict Transport Security (HSTS)
-
-HSTS headers were configured to enforce HTTPS communication.
-
-Configuration Details
-
-Max-age set to one year
-
-Subdomains included
-
-Preload enabled
-
-Important Note
-
-HSTS is ignored by browsers on HTTP and localhost environments. It becomes effective when the application is deployed over HTTPS in a production environment.
-
-Security Benefit
-
-Forces encrypted HTTPS communication
-
-Prevents SSL stripping and protocol downgrade attacks
-
-Verification & Testing
-
-The following verification steps were performed:
-
-Fail2Ban jail status verified using fail2ban-client
-
-API rate limiting tested by repeated requests
-
-Unauthorized API access tested without API key
-
-Authorized access verified with valid API key
-
-Security headers confirmed via browser developer tools
+## Author
+Momenah Saif
