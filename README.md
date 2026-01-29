@@ -5,7 +5,7 @@ This project focuses on implementing advanced security controls for a Node.js Ex
 
 The implementation covers intrusion detection, API abuse prevention, secure cross-origin communication, authentication mechanisms, and browser-level security headers.
 
----
+
 
 ## Objectives
 - Detect and mitigate brute-force and unauthorized access attempts
@@ -13,7 +13,7 @@ The implementation covers intrusion detection, API abuse prevention, secure cros
 - Implement strong browser security controls to prevent client-side attacks
 - Align security practices with OWASP Top 10 recommendations
 
----
+
 
 ## Technologies Used
 - Node.js
