@@ -24,7 +24,7 @@ The implementation covers intrusion detection, API abuse prevention, secure cros
 - helmet
 - Linux (Ubuntu/Kali)
 
----
+
 
 ## 1. Intrusion Detection & Monitoring
 
@@ -46,7 +46,7 @@ Fail2Ban was configured as a host-based intrusion prevention system to monitor a
 - Automatic IP banning after multiple failed attempts
 - Protection against brute-force attacks
 
----
+
 
 ## 2. API Security Hardening
 
@@ -63,7 +63,6 @@ Rate limiting was implemented to protect API endpoints from brute-force and deni
 
 This ensures that excessive or malicious requests are automatically blocked.
 
----
 
 ### 2.2 Cross-Origin Resource Sharing (CORS)
 
@@ -78,7 +77,6 @@ CORS was configured to restrict API access to trusted origins only. This prevent
 
 This reduces the risk of cross-origin data leakage and misuse.
 
----
 
 ### 2.3 API Authentication
 
@@ -93,7 +91,6 @@ Sensitive API endpoints were protected using API key–based authentication. Req
 
 This ensures that only authorized clients can access protected resources.
 
----
 
 ## 3. Security Headers & Content Security Policy
 
@@ -103,7 +100,6 @@ This ensures that only authorized clients can access protected resources.
 
 Helmet middleware was used to add multiple HTTP security headers automatically, protecting the application from common browser-based attacks such as clickjacking and MIME-type sniffing.
 
----
 
 ### 3.2 Content Security Policy (CSP)
 
@@ -117,7 +113,6 @@ A strict Content Security Policy was implemented to mitigate Cross-Site Scriptin
 
 This significantly reduces the risk of script injection attacks.
 
----
 
 ### 3.3 HTTP Strict Transport Security (HSTS)
 
@@ -130,7 +125,6 @@ HSTS was configured to enforce secure HTTPS communication.
 
 Note: HSTS is enforced only when the application is deployed over HTTPS. On localhost (HTTP), browsers ignore this header, which is expected behavior.
 
----
 
 ## Verification & Testing
 - API endpoints tested via browser and command-line tools
@@ -139,13 +133,10 @@ Note: HSTS is enforced only when the application is deployed over HTTPS. On loca
 - Security headers confirmed using browser developer tools
 - Fail2Ban status checked using `fail2ban-client`
 
----
-
 
 ## Conclusion
 This focused on implementing practical, real-world security controls across both server-side and client-side layers. The application is now protected against common threats such as brute-force attacks, API abuse, unauthorized access, and client-side script injection, aligning with modern web security best practices.
 
----
 
 ## Repository Contents
 - Express application source code
